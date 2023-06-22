@@ -98,6 +98,7 @@ namespace DogGo.Repositories
                                 Phone = reader.GetString(reader.GetOrdinal("Phone")),
                                 Neighborhood = new Neighborhood
                                 {
+                                    Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
                                     Name = reader.GetString(reader.GetOrdinal("NeighborhoodName"))
                                 },
                                 Dogs = new List<Dog>()
