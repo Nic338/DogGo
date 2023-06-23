@@ -39,7 +39,23 @@ namespace DogGo.Controllers
                 return NotFound();
             }
 
-            return View(walker);
+            List<Walks> walks = _walksRepo.GetWalksByWalkerId(id);
+
+            TimeSpan totalWalkTime = TimeSpan.Zero;
+
+            foreach (Walks walk in walks)
+            {
+                totalWalkTime += walk.Duration;
+            }
+
+            WalkerProfileViewModel vm = new WalkerProfileViewModel
+            {
+                Walker = walker,
+                Walks = walks,
+                TotalWalkTime = totalWalkTime
+            };
+
+            return View(vm);
         }
         // GET: WalkerController/Create
         public ActionResult Create()

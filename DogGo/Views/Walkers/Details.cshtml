@@ -1,42 +1,53 @@
-﻿@model DogGo.Models.Walker
-
+﻿@model DogGo.Models.ViewModels.WalkerProfileViewModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Walker Profile";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Walker</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Neighborhood)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Neighborhood.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            <img class="bg-info" src="@Model.ImageUrl" alt="avatar" />
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    <h1 class="mb-4">Walker Profile</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <img class="img-fluid rounded-circle" src="@Model.Walker.ImageUrl" alt="Walker Image" />
+        </div>
+        <div class="col-md-9">
+            <div>
+                <label class="font-weight-bold">Name:</label>
+                <span>@Model.Walker.Name</span>
+            </div>
+            <div>
+                <label class="font-weight-bold">Neighborhood:</label>
+                <span>@Model.Walker.Neighborhood.Name</span>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-5" />
+    <div class="row mt-5">
+        <div class="col-md-8">
+            <h2 class="text-left">Recent Walks</h2>
+            <table class="table">
+                <thead>
+                    <tr style="color: lightgrey">
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Walks walk in Model.Walks)
+                    {
+                        <tr>
+                            <td>@walk.Date</td>
+                            <td>@walk.Owner.Name</td>
+                            <td>@string.Format("{0} hr {1} min", walk.Duration.Hours, walk.Duration.Minutes)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-light p-3">
+                <h2 class="text-right" style="color: lightgrey">Total Walk Time</h2>
+                <p class="text-right" style="font-size: 20px;">@Model.TotalWalkTime</p>
+            </div>
+        </div>
+    </div>
 </div>
