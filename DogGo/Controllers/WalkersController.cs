@@ -3,6 +3,7 @@ using DogGo.Models.ViewModels;
 using DogGo.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DogGo.Controllers
 {
@@ -21,12 +22,26 @@ namespace DogGo.Controllers
             _dogRepo = _dogRepository;
             _walkerRepo = walkerRepository;
         }
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
         // GET: Walkers
         public ActionResult Index()
         {
-            List<Walker> walkers = _walkerRepo.GetAllWalkers();
-
-            return View(walkers);
+            try
+            {
+                int LoggedInUser = GetCurrentUserId();
+                Owner LoggedInOwner = _ownerRepo.GetOwnerById(LoggedInUser);
+                List<Walker> walkers = _walkerRepo.GetWalkersInNeighborhood(LoggedInOwner.NeighborhoodId);
+                return View(walkers);
+            }
+            catch (Exception ex)
+            {
+                List<Walker> walkers = _walkerRepo.GetAllWalkers();
+                return View(walkers);
+            }
         }
 
         // GET: Walkers/Details/5
