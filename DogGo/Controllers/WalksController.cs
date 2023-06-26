@@ -95,21 +95,33 @@ namespace DogGo.Controllers
         // GET: HomeController1/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+
+            List<Walks> walks = _walksRepo.GetWalksByWalkerId(id);
+
+            DeleteWalkFormViewModel vm = new DeleteWalkFormViewModel()
+            {
+                Walks = walks,
+                SelectedWalkIds = new List<int>()
+            };
+
+            return View(vm);
         }
 
         // POST: HomeController1/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(List<int> SelectedWalkIds)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _walksRepo.DeleteWalks(SelectedWalkIds);
+
+                return RedirectToAction($"Index", "Walkers");
             }
-            catch
+
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction("Index", "Home");
             }
         }
     }

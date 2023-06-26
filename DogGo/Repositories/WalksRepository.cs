@@ -100,13 +100,12 @@ namespace DogGo.Repositories
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
-
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"
                                 DELETE FROM Walks
                                 WHERE Id = @walkId
-                            ";
+                        ";
 
                         cmd.Parameters.AddWithValue("@walkId", walkId);
 
