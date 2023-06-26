@@ -23,6 +23,9 @@
     <div class="row mt-5">
         <div class="col-md-8">
             <h2 class="text-left">Recent Walks</h2>
+            <p>
+                <a class="nav-link" asp-area="" asp-controller="Walks" asp-action="Create">Add A Walk</a>
+            </p>
             <table class="table">
                 <thead>
                     <tr style="color: lightgrey">
@@ -37,7 +40,7 @@
                         <tr>
                             <td>@walk.Date</td>
                             <td>@walk.Owner.Name</td>
-                            <td>@string.Format("{0} hr {1} min", walk.Duration.Hours, walk.Duration.Minutes)</td>
+                            <td>@TimeSpan.FromSeconds(walk.Duration).ToString(@"h\h\rmm\m\i\n")</td>
                         </tr>
                     }
                 </tbody>
@@ -46,7 +49,7 @@
         <div class="col-md-4">
             <div class="bg-light p-3">
                 <h2 class="text-right" style="color: lightgrey">Total Walk Time</h2>
-                <p class="text-right" style="font-size: 20px;">@Model.TotalWalkTime</p>
+                <p class="text-right" style="font-size: 20px;">@TimeSpan.FromSeconds(Model.Walks.Sum(walk => walk.Duration)).ToString(@"h\h\rmm\m\i\n")</p>
             </div>
         </div>
     </div>

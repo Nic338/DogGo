@@ -56,18 +56,11 @@ namespace DogGo.Controllers
 
             List<Walks> walks = _walksRepo.GetWalksByWalkerId(id);
 
-            TimeSpan totalWalkTime = TimeSpan.Zero;
-
-            foreach (Walks walk in walks)
-            {
-                totalWalkTime += walk.Duration;
-            }
 
             WalkerProfileViewModel vm = new WalkerProfileViewModel
             {
                 Walker = walker,
-                Walks = walks,
-                TotalWalkTime = totalWalkTime
+                Walks = walks                
             };
 
             return View(vm);

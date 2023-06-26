@@ -47,7 +47,7 @@ namespace DogGo.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("WalkId")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                            Duration = TimeSpan.FromSeconds(reader.GetInt32(reader.GetOrdinal("Duration"))),                          
+                            Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
                             Owner = new Owner
                             {
@@ -60,6 +60,58 @@ namespace DogGo.Repositories
                     reader.Close();
 
                     return walks;
+                }
+            }
+        }
+        public void AddWalks(Walks walk, List<int> SelectedDogIds)
+        {
+            //Putting a foreach loop in this so you can add a walk object for each dog selected from the drop down
+            //Hold Ctrl and click each dog in the select to walk multiple dogs
+            foreach (int dogId in SelectedDogIds)
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+
+                        cmd.CommandText = @"
+                        INSERT INTO Walks (Date, Duration, WalkerId, DogId)
+                        OUTPUT INSERTED.ID
+                        VALUES (@date, @duration, @walkerId, @dogId);
+                    ";
+
+                        cmd.Parameters.AddWithValue("@date", walk.Date);
+                        cmd.Parameters.AddWithValue("@duration", walk.Duration);
+                        cmd.Parameters.AddWithValue("@walkerId", walk.WalkerId);
+                        cmd.Parameters.AddWithValue("@dogId", dogId);
+
+                        int id = (int)cmd.ExecuteScalar();
+
+                        walk.Id = id;
+                    }
+                }
+            }
+        }
+        public void DeleteWalks(List<int> SelectedWalkIds)
+        {
+            foreach (int walkId in SelectedWalkIds)
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                                DELETE FROM Walks
+                                WHERE Id = @walkId
+                            ";
+
+                        cmd.Parameters.AddWithValue("@walkId", walkId);
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
