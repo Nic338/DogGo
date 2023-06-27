@@ -4,7 +4,7 @@ namespace DogGo.Models.ViewModels
 {
     public class DeleteWalkFormViewModel
     {
-        public List<Walks> Walks { get; set; }
+        public List<Walks> DeletableWalks { get; set; }
 
         [DisplayName("Walks")]
         public List<int> SelectedWalkIds { get; set; }

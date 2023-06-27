@@ -24,8 +24,9 @@
         <div class="col-md-8">
             <h2 class="text-left">Recent Walks</h2>
             <p>
-                <a class="nav-link" asp-area="" asp-controller="Walks" asp-action="Create">Add A Walk</a>
-                <a class="nav-link" asp-area="" asp-controller="Walks" asp-action="Delete">Delete Walks</a>
+               @*Had to change these two links to actionlinks so the delete and create can grab the walker.id*@
+                @Html.ActionLink("Add a New Walk", "Create", "Walks", new {  id=Model.Walker.Id })
+                @Html.ActionLink("Delete a Walk", "Delete", "Walks", new {  id=Model.Walker.Id })
             </p>
             <table class="table">
                 <thead>

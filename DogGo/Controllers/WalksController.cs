@@ -13,28 +13,28 @@ namespace DogGo.Controllers
         private readonly IDogRepository _dogRepo;
         private readonly IWalkerRepository _walkerRepo;
         private readonly INeighborhoodRepository _neighborhoodRepo;
-        public WalksController(IWalkerRepository walkerRepository, IOwnerRepository _ownerRepository, IDogRepository _dogRepository, IWalksRepository _walksRepository, INeighborhoodRepository neighborhoodRepo)
+        public WalksController(IWalkerRepository _walkerRepository, IOwnerRepository _ownerRepository, IDogRepository _dogRepository, IWalksRepository _walksRepository, INeighborhoodRepository _neighborhoodRepository)
         {
             _walksRepo = _walksRepository;
             _ownerRepo = _ownerRepository;
             _dogRepo = _dogRepository;
-            _walkerRepo = walkerRepository;
-            _neighborhoodRepo = neighborhoodRepo;
+            _walkerRepo = _walkerRepository;
+            _neighborhoodRepo = _neighborhoodRepository;
         }
-        // GET: HomeController1
+        // GET: WalksController1
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: HomeController1/Details/5
+        // GET: WalksController1/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: HomeController1/Create
-        public ActionResult Create()
+        // GET: WalksController1/Create
+        public ActionResult Create(int id)
         {
 
             List<Dog> dogs = _dogRepo.GetAllDogs();
@@ -50,11 +50,11 @@ namespace DogGo.Controllers
 
             //set a default date to now
             vm.Walk.Date = DateTime.Now;
-
+            vm.Walk.WalkerId = id;
             return View(vm);
         }
 
-        // POST: HomeController1/Create
+        // POST: WalksController1/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Walks walk, List<int> SelectedDogIds)
@@ -71,13 +71,13 @@ namespace DogGo.Controllers
             }
         }
 
-        // GET: HomeController1/Edit/5
+        // GET: WalksController1/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: HomeController1/Edit/5
+        // POST: WalksController1/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -92,7 +92,7 @@ namespace DogGo.Controllers
             }
         }
 
-        // GET: HomeController1/Delete/5
+        // GET: WalksController1/Delete/5
         public ActionResult Delete(int id)
         {
 
@@ -100,14 +100,14 @@ namespace DogGo.Controllers
 
             DeleteWalkFormViewModel vm = new DeleteWalkFormViewModel()
             {
-                Walks = walks,
+                DeletableWalks = walks,
                 SelectedWalkIds = new List<int>()
             };
 
             return View(vm);
         }
 
-        // POST: HomeController1/Delete/5
+        // POST: WalksController1/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(List<int> SelectedWalkIds)

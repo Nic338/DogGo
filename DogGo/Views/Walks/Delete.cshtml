@@ -7,7 +7,6 @@
 <h1>Delete Walk(s)</h1>
 
 <div>
-    <h4>(Hold Ctrl and click each walk to select multiple)</h4>
     <hr />
     
     <form asp-action="Delete">
@@ -16,7 +15,7 @@
             <label asp-for="SelectedWalkIds" class="control-label"></label>
             <select multiple="true" asp-for="SelectedWalkIds" class="form-control">
                 <option value="">Select Walk</option>
-                @foreach (Walks walk in Model.Walks)
+                @foreach (Walks walk in Model.DeletableWalks)
                 {
                     <option value="@walk.Id">@walk.Date</option>
                 }
@@ -24,7 +23,7 @@
             <span asp-validation-for="SelectedWalkIds" class="text-danger"></span>
         </div>
 
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
         <a asp-area="" asp-controller="Walkers" asp-action="Index">Back to Walkers</a>
 
     </form>

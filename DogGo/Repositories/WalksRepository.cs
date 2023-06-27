@@ -33,7 +33,7 @@ namespace DogGo.Repositories
                         FROM Walks
                         JOIN Dog on Walks.DogId = Dog.Id
                         JOIN Owner on Dog.OwnerId = Owner.Id
-                        WHERE WalkerId = @walkerId";
+                        WHERE Walks.WalkerId = @walkerId";
 
                     cmd.Parameters.AddWithValue("@walkerId", walkerId);
 
