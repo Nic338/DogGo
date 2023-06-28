@@ -169,7 +169,7 @@ namespace DogGo.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity));
 
-            return RedirectToAction("Index", "Dog");
+            return RedirectToAction($"Details", "Owners", new { id = owner.Id});
         }
 
         public async Task<ActionResult> Logout()
